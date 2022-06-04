@@ -187,6 +187,7 @@ class FToast {
     PositionedToastBuilder? positionedToastBuilder,
     Duration? toastDuration,
     ToastGravity? gravity,
+    EdgeInsets? margin,
     int fadeDuration = 350,
   }) {
     if (context == null)
@@ -206,7 +207,7 @@ class FToast {
     OverlayEntry newEntry = OverlayEntry(builder: (context) {
       if (positionedToastBuilder != null)
         return positionedToastBuilder(context, newChild);
-      return _getPostionWidgetBasedOnGravity(newChild, gravity);
+      return _getPostionWidgetBasedOnGravity(newChild, margin, gravity);
     });
 
     _overlayQueue.add(_ToastEntry(
@@ -217,25 +218,53 @@ class FToast {
   /// _getPostionWidgetBasedOnGravity generates [Positioned] [Widget]
   /// based on the gravity  [ToastGravity] provided by the user in
   /// [showToast]
-  _getPostionWidgetBasedOnGravity(Widget child, ToastGravity? gravity) {
+  _getPostionWidgetBasedOnGravity(Widget child, EdgeInsets? margin, ToastGravity? gravity) {
     switch (gravity) {
       case ToastGravity.TOP:
-        return Positioned(top: 100.0, left: 24.0, right: 24.0, child: child);
+        return Positioned(
+          top: margin == null ? 100.0 : margin.top, 
+          left: margin == null ? 24.0 : margin.left, 
+          right: margin == null ? 24.0 : margin.right, 
+          child: child);
       case ToastGravity.TOP_LEFT:
-        return Positioned(top: 100.0, left: 24.0, child: child);
+        return Positioned(
+          top: margin == null ? 100.0 : margin.top, 
+          left: margin == null ? 24.0 : margin.left, 
+          child: child);
       case ToastGravity.TOP_RIGHT:
-        return Positioned(top: 100.0, right: 24.0, child: child);
+        return Positioned(
+          top: margin == null ? 100.0 : margin.top, 
+          right: margin == null ? 24.0 : margin.right, 
+          child: child);
       case ToastGravity.CENTER:
         return Positioned(
-            top: 50.0, bottom: 50.0, left: 24.0, right: 24.0, child: child);
+          top: margin == null ? 50.0 : margin.top, 
+          bottom: margin == null ? 50.0 : margin.bottom, 
+          left: margin == null ? 24.0 : margin.left, 
+          right: margin == null ? 24.0 : margin.right, 
+          child: child);
       case ToastGravity.CENTER_LEFT:
-        return Positioned(top: 50.0, bottom: 50.0, left: 24.0, child: child);
+        return Positioned(
+          top: margin == null ? 50.0 : margin.top, 
+          bottom: margin == null ? 50.0 : margin.bottom, 
+          left: margin == null ? 24.0 : margin.left, 
+          child: child);
       case ToastGravity.CENTER_RIGHT:
-        return Positioned(top: 50.0, bottom: 50.0, right: 24.0, child: child);
+        return Positioned(
+          top: margin == null ? 50.0 : margin.top, 
+          bottom: margin == null ? 50.0 : margin.bottom, 
+          right: margin == null ? 24.0 : margin.right, 
+          child: child);
       case ToastGravity.BOTTOM_LEFT:
-        return Positioned(bottom: 50.0, left: 24.0, child: child);
+        return Positioned(
+          bottom: margin == null ? 50.0 : margin.bottom, 
+          left: margin == null ? 24.0 : margin.left, 
+          child: child);
       case ToastGravity.BOTTOM_RIGHT:
-        return Positioned(bottom: 50.0, right: 24.0, child: child);
+        return Positioned(
+          bottom: margin == null ? 50.0 : margin.bottom, 
+          right: margin == null ? 24.0 : margin.right, 
+          child: child);
       case ToastGravity.SNACKBAR:
         return Positioned(
             bottom: MediaQuery.of(context!).viewInsets.bottom,
@@ -244,7 +273,11 @@ class FToast {
             child: child);
       case ToastGravity.BOTTOM:
       default:
-        return Positioned(bottom: 50.0, left: 24.0, right: 24.0, child: child);
+        return Positioned(
+          bottom: margin == null ? 50.0 : margin.bottom, 
+          left: margin == null ? 24.0 : margin.left, 
+          right: margin == null ? 24.0 : margin.right, 
+          child: child);
     }
   }
 }
